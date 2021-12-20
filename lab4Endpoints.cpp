@@ -124,18 +124,11 @@ std::vector<int> searchLinear(const::std::string& str, std::string substr)
 {
 	int iter = 0;
 	std::vector<int> res;
-	for(int i = 0; i < str.length(); ++i)
+	for(int i = 0; i < str.length() - substr.length() + 1; ++i)
 	{
-		if (str[i] == substr[iter])
-		{
-			if (iter == substr.length() - 1)
-			{
-				res.push_back(i - iter);
-				iter = 0;
-			}
-			iter++;
-		}
-		else iter = 0;
+		int j = 0;
+		while (j != substr.length() && str[i+j] == substr[j]) ++j;
+		if (j == substr.length()) res.push_back(i);
 	}
 	
 	return res;
@@ -222,7 +215,7 @@ std::vector<int> searchBoyerMoore(const std::string& str, const std::string& sub
 		if (substrIndex < 0)
 		{
 			res.push_back(shift);
-			shift += (shift + substr.length() < str.length()) ? substr.length() - badCharHeuristic[shift + substr.length()] : 1;
+			shift += (shift + substr.length() < str.length()) ? substr.length() - badCharHeuristic[shift + substr.length()] - 1 : 1;
 		}
 
 		else
